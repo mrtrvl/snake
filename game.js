@@ -503,7 +503,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (snake.speedY !== 1) {
       snake.speedX = 0;
       snake.speedY = -1;
-      if (!(snake.speedX !== 0 || snake.speedY !== 0)) startGameLoop();
+      // Fix the game start condition
+      const gameStarted = snake.tail.length > 0;
+      if (!gameStarted) startGameLoop();
     }
   });
 
@@ -512,7 +514,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (snake.speedY !== -1) {
       snake.speedX = 0;
       snake.speedY = 1;
-      if (!(snake.speedX !== 0 || snake.speedY !== 0)) startGameLoop();
+      // Fix the game start condition
+      const gameStarted = snake.tail.length > 0;
+      if (!gameStarted) startGameLoop();
     }
   });
 
@@ -521,7 +525,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (snake.speedX !== 1) {
       snake.speedX = -1;
       snake.speedY = 0;
-      if (!(snake.speedX !== 0 || snake.speedY !== 0)) startGameLoop();
+      // Fix the game start condition
+      const gameStarted = snake.tail.length > 0;
+      if (!gameStarted) startGameLoop();
     }
   });
 
@@ -530,7 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (snake.speedX !== -1) {
       snake.speedX = 1;
       snake.speedY = 0;
-      if (!(snake.speedX !== 0 || snake.speedY !== 0)) startGameLoop();
+      // Fix the game start condition
+      const gameStarted = snake.tail.length > 0;
+      if (!gameStarted) startGameLoop();
     }
   });
 
