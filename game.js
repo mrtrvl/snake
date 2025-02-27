@@ -669,8 +669,12 @@ document.addEventListener('DOMContentLoaded', () => {
     gameLoop();
   }
 
-  // Event listener for restart button
+  // Event listeners for restart button - both click and touch
   restartButton.addEventListener('click', init);
+  restartButton.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevent any default touch behavior
+    init();
+  });
 
   // Prevent default touch behaviors only for buttons
   document.addEventListener('touchstart', function (e) {

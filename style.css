@@ -100,11 +100,14 @@ button:hover {
 
 #restart {
   width: auto;
-  padding: 10px 20px;
+  min-width: 120px;
+  padding: 15px 25px;
   border-radius: 30px;
   background-color: #4caf50;
   font-size: 1.2rem;
   margin-top: 15px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #restart:hover {
@@ -122,6 +125,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   display: none;
+  z-index: 1000; /* Ensure it's above everything */
 }
 
 .message-content {
@@ -133,6 +137,7 @@ button:hover {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   border: 5px solid #ff5722;
   animation: pop-in 0.5s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes bounce {
