@@ -11,9 +11,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const leftButton = document.getElementById('left');
   const rightButton = document.getElementById('right');
 
+  // Base size and scaling
+  const BASE_SIZE = 400;
+  const BASE_GRID = 20;
+  let gridSize = BASE_GRID;
+  let tileCount = BASE_SIZE / BASE_GRID;
+
+  // Function to update canvas size
+  function updateCanvasSize() {
+    const container = canvas.parentElement;
+    const containerWidth = container.clientWidth;
+    const scale = Math.min(containerWidth / BASE_SIZE, 1);
+
+    // Update canvas size
+    canvas.width = BASE_SIZE * scale;
+    canvas.height = BASE_SIZE * scale;
+
+    // Update grid size
+    gridSize = BASE_GRID * scale;
+
+    // Redraw if game is already running
+    if (gameActive && (snake.speedX !== 0 || snake.speedY !== 0)) {
+      clearCanvas();
+      drawFood();
+      drawBirthdayItems();
+      drawSnake();
+      drawMessages();
+    }
+  }
+
+  // Call once at start and add resize listener
+  updateCanvasSize();
+  window.addEventListener('resize', updateCanvasSize);
+
   // Game variables
-  const gridSize = 20;
-  const tileCount = canvas.width / gridSize;
   let score = 0;
   let gameSpeed = 200; // Changed from 100 to 200 (slower)
   let gameActive = true;
