@@ -159,7 +159,7 @@ button:hover {
 @media (max-width: 500px) {
   .game-container {
     width: 100%;
-    padding: 10px 10px 0 10px;
+    padding: 5px 5px 0 5px;
     border-width: 3px;
     min-height: 100vh;
     min-height: -webkit-fill-available;
@@ -174,15 +174,21 @@ button:hover {
   }
 
   h1 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    margin-bottom: 2px;
   }
 
   h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .score-container {
+    margin: 5px 0;
   }
 
   canvas {
-    width: 90%;
+    width: 85%;
     border-width: 2px;
     border-radius: 8px;
     margin: 5px auto;
@@ -190,31 +196,29 @@ button:hover {
   }
 
   .controls {
-    margin: 10px 0;
-    padding: 10px 0 max(20px, env(safe-area-inset-bottom, 20px));
+    margin: 5px 0;
+    padding: 5px 0 15px;
     touch-action: none;
     width: 100%;
     flex-shrink: 0;
   }
 
   .controls button {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     font-size: 2rem;
-    margin: 5px;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+    margin: 3px;
   }
 
   .controls-row {
-    gap: 8px;
-    margin: 5px 0;
+    gap: 6px;
+    margin: 3px 0;
   }
 
   #up,
   #down {
-    width: 75px;
-    height: 75px;
+    width: 70px;
+    height: 70px;
   }
 
   .message-content {
