@@ -1,4 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Audio Context
+  let audioCtx = null;
+
+  // Initialize audio context on first user interaction
+  function initAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  }
+
+  // Function to play a beep sound
+  function playBeep(frequency, duration, type = 'sine') {
+    if (!audioCtx) return;
+
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + duration);
+  }
+
   // Game elements
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
@@ -10,6 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const downButton = document.getElementById('down');
   const leftButton = document.getElementById('left');
   const rightButton = document.getElementById('right');
+
+  // Sound elements
+  const eatSound = document.getElementById('eatSound');
+  const specialSound = document.getElementById('specialSound');
+  const gameOverSound = document.getElementById('gameOverSound');
+  const startSound = document.getElementById('startSound');
+
+  // Sound functions
+  function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play().catch(error => console.log('Sound play failed:', error));
+  }
 
   // Game variables
   let score = 0;
@@ -250,6 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkCollisions() {
     // Check collision with food
     if (snake.x === food.x && snake.y === food.y) {
+      // Play eat sound
+      playBeep(880, 0.1);
+
       // Increase the tail length
       snake.tailLength += 1;
 
@@ -270,6 +315,9 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = birthdayItems.length - 1; i >= 0; i--) {
       const item = birthdayItems[i];
       if (snake.x === item.x && snake.y === item.y) {
+        // Play special sound
+        playBeep(1760, 0.2, 'square');
+
         // Increase the tail length
         snake.tailLength += 1;
 
@@ -474,6 +522,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Game over
   function gameOver() {
     gameActive = false;
+    // Play game over sound
+    playBeep(440, 0.3, 'sawtooth');
+
     finalScoreElement.textContent = score;
     messageElement.style.display = 'flex';
 
@@ -575,6 +626,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to start the game loop
   function startGameLoop() {
+    initAudio(); // Initialize audio
+    // Play start sound
+    playBeep(1175, 0.2);
+
     // Clear any welcome message
     currentMessage = "Läks lahti, Alexander!";
     messageTimer = 30;
@@ -655,6 +710,10 @@ document.addEventListener('DOMContentLoaded', () => {
   rightButton.addEventListener('touchstart', () => {
     handleButtonPress('right');
   }, { passive: true });
+
+  // Initialize audio on first click/touch
+  document.addEventListener('click', initAudio, { once: true });
+  document.addEventListener('touchstart', initAudio, { once: true });
 
   // Initialize the game
   init();
