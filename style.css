@@ -59,6 +59,10 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .controls-row {
@@ -148,15 +152,62 @@ button:hover {
 
 @media (max-width: 500px) {
   .game-container {
-    width: 95%;
+    width: 100%;
+    padding: 10px;
+    border-width: 3px;
+    min-height: 100vh;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
   }
 
   canvas {
     width: 100%;
     height: auto;
+    max-height: 40vh;
+    object-fit: contain;
+    margin: 0 auto;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  .controls {
+    margin-top: auto;
+    padding: 20px 0;
+    touch-action: none;
+  }
+
+  .controls button {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    margin: 8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .controls-row {
+    gap: 10px;
+  }
+
+  #up,
+  #down {
+    width: 100px;
+    height: 100px;
+  }
+
+  .message-content {
+    padding: 20px;
+    max-width: 90%;
   }
 }

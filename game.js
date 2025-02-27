@@ -555,6 +555,76 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event listener for restart button
   restartButton.addEventListener('click', init);
 
+  // Prevent default touch behaviors only for buttons
+  document.addEventListener('touchstart', function (e) {
+    if (e.target.tagName === 'BUTTON') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Prevent scrolling during game
+  document.addEventListener('touchmove', function (e) {
+    if (e.target.tagName === 'CANVAS' || e.target.tagName === 'BUTTON') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Enhanced touch controls with passive listeners where possible
+  function handleButtonPress(direction) {
+    if (!gameActive) return;
+
+    switch (direction) {
+      case 'up':
+        if (snake.speedY !== 1) {
+          snake.speedX = 0;
+          snake.speedY = -1;
+          const gameStarted = snake.tail.length > 0;
+          if (!gameStarted) startGameLoop();
+        }
+        break;
+      case 'down':
+        if (snake.speedY !== -1) {
+          snake.speedX = 0;
+          snake.speedY = 1;
+          const gameStarted = snake.tail.length > 0;
+          if (!gameStarted) startGameLoop();
+        }
+        break;
+      case 'left':
+        if (snake.speedX !== 1) {
+          snake.speedX = -1;
+          snake.speedY = 0;
+          const gameStarted = snake.tail.length > 0;
+          if (!gameStarted) startGameLoop();
+        }
+        break;
+      case 'right':
+        if (snake.speedX !== -1) {
+          snake.speedX = 1;
+          snake.speedY = 0;
+          const gameStarted = snake.tail.length > 0;
+          if (!gameStarted) startGameLoop();
+        }
+        break;
+    }
+  }
+
+  upButton.addEventListener('touchstart', () => {
+    handleButtonPress('up');
+  }, { passive: true });
+
+  downButton.addEventListener('touchstart', () => {
+    handleButtonPress('down');
+  }, { passive: true });
+
+  leftButton.addEventListener('touchstart', () => {
+    handleButtonPress('left');
+  }, { passive: true });
+
+  rightButton.addEventListener('touchstart', () => {
+    handleButtonPress('right');
+  }, { passive: true });
+
   // Initialize the game
   init();
 });
