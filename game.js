@@ -11,11 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const leftButton = document.getElementById('left');
   const rightButton = document.getElementById('right');
 
+  // Game variables
+  let score = 0;
+  let gameSpeed = 200; // Changed from 100 to 200 (slower)
+  let gameActive = true;
+
   // Base size and scaling
   const BASE_SIZE = 400;
   const BASE_GRID = 20;
   let gridSize = BASE_GRID;
   let tileCount = BASE_SIZE / BASE_GRID;
+
+  // Snake variables
+  const snake = {
+    x: 10,
+    y: 10,
+    color: '#4CAF50',
+    speedX: 0,
+    speedY: 0,
+    tail: [],
+    tailLength: 3
+  };
 
   // Function to update canvas size
   function updateCanvasSize() {
@@ -43,22 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Call once at start and add resize listener
   updateCanvasSize();
   window.addEventListener('resize', updateCanvasSize);
-
-  // Game variables
-  let score = 0;
-  let gameSpeed = 200; // Changed from 100 to 200 (slower)
-  let gameActive = true;
-
-  // Snake variables
-  const snake = {
-    x: 10,
-    y: 10,
-    color: '#4CAF50',
-    speedX: 0,
-    speedY: 0,
-    tail: [],
-    tailLength: 3
-  };
 
   // Food variables
   let food = generateFood();
