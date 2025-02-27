@@ -1,33 +1,62 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Audio Context
   let audioCtx = null;
+  let audioInitialized = false;
 
   // Initialize audio context on first user interaction
   function initAudio() {
-    if (!audioCtx) {
+    if (audioInitialized) return;
+
+    try {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioInitialized = true;
+    } catch (error) {
+      console.log('Audio initialization failed:', error);
     }
   }
 
   // Function to play a beep sound
   function playBeep(frequency, duration, type = 'sine') {
-    if (!audioCtx) return;
+    if (!audioCtx || !audioInitialized) {
+      try {
+        initAudio();
+      } catch (error) {
+        console.log('Could not initialize audio:', error);
+        return;
+      }
+    }
 
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+    try {
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
 
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
 
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+      gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
 
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + duration);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + duration);
+    } catch (error) {
+      console.log('Error playing sound:', error);
+    }
   }
+
+  // Initialize audio on various user interactions
+  document.addEventListener('touchstart', initAudio, { once: true });
+  document.addEventListener('click', initAudio, { once: true });
+  document.addEventListener('keydown', initAudio, { once: true });
+
+  // Resume audio context on visibility change (for mobile browsers)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && audioCtx) {
+      audioCtx.resume();
+    }
+  });
 
   // Game elements
   const canvas = document.getElementById('game');
@@ -626,7 +655,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to start the game loop
   function startGameLoop() {
-    initAudio(); // Initialize audio
+    // Make sure audio is initialized when game starts
+    initAudio();
+
     // Play start sound
     playBeep(1175, 0.2);
 
