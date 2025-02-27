@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alexandri Sünnipäeva ussimäng!</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="header">
+        <h1>🎉 Alexandri ussiseiklus! 🎉</h1>
+        <h2>Palju Õnne 8. Sünnipäevaks!</h2>
+        <div class="score-container">
+          <span>Punktid: </span>
+          <span id="score">0</span>
+        </div>
+      </div>
+
+      <canvas id="game" width="400" height="400"></canvas>
+
+      <div class="controls">
+        <div class="controls-row">
+          <button id="up">↑</button>
+        </div>
+        <div class="controls-row">
+          <button id="left">←</button>
+          <button id="down">↓</button>
+          <button id="right">→</button>
+        </div>
+      </div>
+
+      <div class="message" id="message">
+        <div class="message-content">
+          <h2>Mäng Läbi!</h2>
+          <p>Sinu punktid: <span id="final-score">0</span></p>
+          <button id="restart">Mängi Uuesti</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>
