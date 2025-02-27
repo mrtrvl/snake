@@ -159,35 +159,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Game initialization
   function init() {
+    // Reset all game state
     score = 0;
     scoreElement.textContent = score;
     snake.x = 10;
     snake.y = 10;
     snake.speedX = 0;
     snake.speedY = 0;
-    snake.tail = [];  // Empty the tail at initialization
+    snake.tail = [];
     snake.tailLength = 3;
     food = generateFood();
     birthdayItems = [];
     gameActive = true;
+    gameSpeed = 200; // Reset speed to initial value
     messageElement.style.display = 'none';
 
-    // Generate a few birthday items
-    generateBirthdayItem();
+    // Clear the canvas and redraw initial state
+    clearCanvas();
+    drawFood();
+    drawSnake();
 
-    // Start the game loop with a slight delay to give player time to prepare
-    setTimeout(() => {
-      // Only start the game loop after the player presses a key
-      currentMessage = "Vajuta nooleklahvi või nuppu alustamiseks, Alexander!";
-      messageTimer = 200; // Keep the message visible longer
-      drawMessages(); // Draw initial message
-
-      // Initial render of game elements
-      clearCanvas();
-      drawFood();
-      drawBirthdayItems();
-      drawSnake();
-    }, 500);
+    // Show initial message
+    currentMessage = "Vajuta nooleklahvi või nuppu alustamiseks, Alexander!";
+    messageTimer = 200;
+    drawMessages();
   }
 
   // Generate food at a random position
@@ -669,12 +664,31 @@ document.addEventListener('DOMContentLoaded', () => {
     gameLoop();
   }
 
-  // Event listeners for restart button - both click and touch
-  restartButton.addEventListener('click', init);
-  restartButton.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent any default touch behavior
+  // Event listeners for restart button - handle all touch/click scenarios
+  function handleRestart(e) {
+    // Always prevent default to ensure no unwanted behaviors
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Initialize audio context if needed
+    initAudio();
+
+    // Reset and start new game
     init();
-  });
+
+    // Play start sound
+    playBeep(1175, 0.2);
+
+    return false;
+  }
+
+  // Remove existing listeners and add new ones
+  restartButton.addEventListener('click', handleRestart);
+  restartButton.addEventListener('touchstart', handleRestart, { passive: false });
+  restartButton.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, { passive: false });
 
   // Prevent default touch behaviors only for buttons
   document.addEventListener('touchstart', function (e) {
